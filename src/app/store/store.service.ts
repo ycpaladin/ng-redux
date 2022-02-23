@@ -20,18 +20,18 @@ export interface IStoreModule<S, D = []> {
 
 
 export interface User {
-  name: string;
+  username: string;
 }
 export interface IUserState {
-  user: User | null;
+  user: User | undefined;
   isFetching: boolean;
   error: boolean;
 }
 
-const userModule: IStoreModule<IUserState> = {
+export const userModule: IStoreModule<IUserState> = {
   name: 'user',
   state: {
-    user: null,
+    user: {username: 'kevin'},
     isFetching: false,
     error: false
   },
@@ -47,6 +47,9 @@ const userModule: IStoreModule<IUserState> = {
     loginFail(error) {
       this.isFetching = false;
       this.error = true;
+    },
+    updateUser(username: string) {
+      this.user!.username = username;
     }
   },
   effects: {

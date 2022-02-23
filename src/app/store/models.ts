@@ -12,6 +12,7 @@ export type State = { [key: string]: any }
 export interface Store<S> {
   getState(): S,
   dispatch(action: Action): void;
+  subscribe(fn: Listener): () => void;
 }
 
 export type Listener = (state: any) => void

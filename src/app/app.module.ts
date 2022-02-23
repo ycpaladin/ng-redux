@@ -17,6 +17,7 @@ import { IconsProviderModule } from './icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { rootReducers } from '@reducers';
+import { userModule } from './store/store.service';
 
 registerLocaleData(zh);
 
@@ -34,7 +35,8 @@ registerLocaleData(zh);
     IconsProviderModule,
     NzLayoutModule,
     NzMenuModule,
-    MyStoreModule.forRoot(rootReducers as any)
+    // MyStoreModule.forRoot(rootReducers as any)
+    MyStoreModule.forConfig(userModule)
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]

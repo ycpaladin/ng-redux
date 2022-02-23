@@ -66,11 +66,17 @@ export class WelcomeComponent implements OnInit {
   };
 
 
+  username: Observable<string>;
   update(): void {
-    this.store.dispatch({ type: 'update_user'})
+    // this.store.dispatch({ type: 'update_user' })
+    this.store.dispatch({type: '[user] updateUser',  username: 'kkkk', age: 123})
   }
-  constructor(private http: HttpClient, public store: Store) {
 
+  constructor(private http: HttpClient, public store: Store) {
+    this.username = this.store.select(s => s.user?.username);
+    this.username.subscribe(v => {
+      console.log('===>', v);
+    })
   }
   ngOnInit(): void {
   }

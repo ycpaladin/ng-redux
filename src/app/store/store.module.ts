@@ -4,8 +4,10 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { Reducer } from './models';
 import { createStore } from './createStore';
-import { STORE_RPOVIDERS } from './token';
-import { Store } from './store';
+import { MODULE_CONFIG, STORE_RPOVIDERS } from './token';
+import { Store, Store2 } from './store';
+import { IStoreModule } from './store.service';
+import { createReducer } from './createReducer';
 
 
 
@@ -23,6 +25,20 @@ export class MyStoreModule {
       providers: [
         { provide: STORE_RPOVIDERS, useValue: store },
         Store
+      ]
+    }
+  }
+
+  static forConfig(module: IStoreModule<any>): ModuleWithProviders<MyStoreModule>{
+    const reducer = createReducer(module)
+    const store = createStore(reducer, module.state);
+    return {
+      ngModule: MyStoreModule,
+      providers: [
+        { provide: STORE_RPOVIDERS, useValue: store },
+        { provide: MODULE_CONFIG, useValue: module},
+        Store,
+        Store2
       ]
     }
   }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Store } from './store/store';
 
 @Component({
@@ -9,8 +10,10 @@ import { Store } from './store/store';
 export class AppComponent {
   isCollapsed = false;
 
-  username!: string;
+  username!: Observable<string>;
   constructor(public store: Store) {
-    this.username = this.store.select(s => s.user.username);
+    this.username = this.store.select(s => s.user?.username);
+
+
   }
 }

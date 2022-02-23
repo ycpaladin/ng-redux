@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
@@ -9,7 +10,7 @@ import { WelcomeComponent } from './welcome.component';
 
 
 @NgModule({
-  imports: [WelcomeRoutingModule, NzUploadModule, NzButtonModule],
+  imports: [WelcomeRoutingModule, NzUploadModule, NzButtonModule, CommonModule],
   declarations: [WelcomeComponent],
   exports: [WelcomeComponent]
 })

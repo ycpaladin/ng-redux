@@ -28,6 +28,7 @@ export function createStore<S = State>(reducers: Reducer<S>, initState: { [key: 
 
   return {
     getState,
-    dispatch
+    dispatch,
+    subscribe
   }
 }
