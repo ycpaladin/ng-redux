@@ -19,7 +19,21 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@": [
+        "src/app"
+      ],
+      "@store/*": [
+        "src/app/_store"
+      ],
+      "@reducers": [
+        "src/app/_store/reducers/index.ts"
+      ],
+      "@s": [
+        "src/app/store/index.ts"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
