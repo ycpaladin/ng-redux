@@ -24,7 +24,7 @@ export class NgxReduxModule {
 
   static forConfig(module: IStoreModule<any>): ModuleWithProviders<NgxReduxModule> {
     let store: Store<any>;
-    const actions = createActions(module, () => store);
+    const actions = createActions(module); // , () => store
     const reducer = createReducer(actions, module.state);
     const plugin = (window as any)['__REDUX_DEVTOOLS_EXTENSION__'];
     store = createStore(reducer, module.state, plugin && plugin());

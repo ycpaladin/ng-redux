@@ -33,7 +33,7 @@ export interface IUserState {
 export const userModule: IStoreModule<IUserState> = {
   name: 'user',
   state: {
-    user: {username: 'kevin'},
+    user: { username: 'kevin' },
     isFetching: false,
     error: false
   },
@@ -50,8 +50,9 @@ export const userModule: IStoreModule<IUserState> = {
       this.isFetching = false;
       this.error = true;
     },
-    updateUser(username: string) {
+    updateUser(username: string, age: number) {
       this.user!.username = username;
+      console.log(username, age);
     }
   },
   effects: {

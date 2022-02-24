@@ -1,14 +1,27 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Listener, State } from './models';
-import { STORE_RPOVIDERS } from './token';
+import { ActionFunction, Listener, State, IStoreModule } from './models';
+import { ACTIONS_PROVIDERS, MODULE_CONFIG, STORE_RPOVIDERS } from './token';
 import { Store, AnyAction } from 'redux';
+import { getActionType } from './utils';
+import { mapActions } from './mapActions';
 
 @Injectable()
 export class NgxReduxStore<S = State> {
 
-  constructor(@Inject(STORE_RPOVIDERS) public store: Store<S>) {
+  constructor(
+    @Inject(STORE_RPOVIDERS) public store: Store<S>,
+    @Inject(MODULE_CONFIG) module: IStoreModule<S>,
+    @Inject(ACTIONS_PROVIDERS) public actions: Map<string, ActionFunction<any>>
+  ) {
+    // (this as any)
+    mapActions.call(this, module as any); // TODO...
+
+    setTimeout(() => {
+      console.log('==。', this)
+    }, 0);
   }
+
   subscribe(fn: Listener): () => void {
     return this.store.subscribe(fn);
   }

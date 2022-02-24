@@ -67,16 +67,19 @@ export class WelcomeComponent implements OnInit {
 
 
   username: Observable<string>;
+  isFetching$!: Observable<boolean>;
   update(): void {
     // this.store.dispatch({ type: 'update_user' })
-    this.store.dispatch({ type: '[user] updateUser', username: 'kkkk', age: 123 })
+    // this.store.dispatch({ type: '[user] updateUser', username: 'kkkk', age: 123 })
+    (this.store as any).updateUser('kkkk', 123);
   }
 
   constructor(private http: HttpClient, public store: NgxReduxStore) {
     this.username = this.store.select(s => s.user?.username);
-    this.username.subscribe(v => {
-      console.log('===>', v);
-    })
+    this.isFetching$ = this.store.select(s => s.isFetching);
+    // this.username.subscribe(v => {
+    //   console.log('===>', v);
+    // })
   }
   ngOnInit(): void {
   }

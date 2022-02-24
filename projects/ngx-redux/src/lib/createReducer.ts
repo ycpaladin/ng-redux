@@ -7,7 +7,10 @@ export function createReducer<S>(actions: Map<string, ActionFunction<S>>, initia
     if (fn) {
       const { type, ...rest } = action;
       const params = Object.keys(rest).map(key => rest[key])
-      fn.apply(state, params)
+      fn.apply(state, params);
+      // return {
+      //   ...state
+      // }
     }
     return state;
   }
