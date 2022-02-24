@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UploadFilter, NzUploadFile } from 'ng-zorro-antd/upload';
+import { NgxReduxStore } from 'ngx-redux';
 import { of, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Store } from 'src/app/store/store';
 
 @Component({
   selector: 'app-welcome',
@@ -69,10 +69,10 @@ export class WelcomeComponent implements OnInit {
   username: Observable<string>;
   update(): void {
     // this.store.dispatch({ type: 'update_user' })
-    this.store.dispatch({type: '[user] updateUser',  username: 'kkkk', age: 123})
+    this.store.dispatch({ type: '[user] updateUser', username: 'kkkk', age: 123 })
   }
 
-  constructor(private http: HttpClient, public store: Store) {
+  constructor(private http: HttpClient, public store: NgxReduxStore) {
     this.username = this.store.select(s => s.user?.username);
     this.username.subscribe(v => {
       console.log('===>', v);

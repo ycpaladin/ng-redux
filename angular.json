@@ -110,6 +110,37 @@
           }
         }
       }
+    },
+    "ngx-redux": {
+      "projectType": "library",
+      "root": "projects/ngx-redux",
+      "sourceRoot": "projects/ngx-redux/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-redux/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-redux/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-redux/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-redux/src/test.ts",
+            "tsConfig": "projects/ngx-redux/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-redux/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "defaultProject": "demo02"

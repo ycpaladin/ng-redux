@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { NgxReduxStore } from 'ngx-redux';
 import { Observable } from 'rxjs';
-import { Store } from './store/store';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ export class AppComponent {
   isCollapsed = false;
 
   username!: Observable<string>;
-  constructor(public store: Store) {
+  constructor(public store: NgxReduxStore<any>) {
     this.username = this.store.select(s => s.user?.username);
 
 

@@ -30,8 +30,11 @@
       "@reducers": [
         "src/app/_store/reducers/index.ts"
       ],
-      "@s": [
-        "src/app/store/index.ts"
+
+      "ngx-redux": [
+        "dist/ngx-redux/ngx-redux",
+        "dist/ngx-redux",
+        "projects/ngx-redux/src/public-api.ts"
       ]
     }
   },
