@@ -43,7 +43,7 @@ export const userModule: IStoreModule<IUserState> = {
   },
   effects: {
     login(username: string, password: string) {
-      // this
+      // this.storeService.actions
       // return of(this.actions.loginSucess)
       setTimeout(() => {
         // this.actions.loginSucess({ name: 'kevin'})
@@ -54,7 +54,7 @@ export const userModule: IStoreModule<IUserState> = {
       }, 2000);
     }
   },
-  effectsDep: []
+  effectsDep: [1, 2]
 }
 
 // userModule.actions

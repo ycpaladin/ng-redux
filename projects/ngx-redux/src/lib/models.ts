@@ -13,14 +13,14 @@ export type Listener = () => void
 export type ActionFunction<S> = (this: S, ...args: any[]) => void;
 export type Actions<S = any> = { [key: string]: ActionFunction<S> }
 
-export type Effect<M> = (this: M, ...args: any[]) => void; // Action<S>;
+export type Effect<S, D> = (this: { state: S, deps: D, storeService: IStoreService<S> }, ...args: any[]) => void; // Action<S>;
 export type EffectsDep = any[];
 export interface IStoreModule<S extends State, D = any[]> {
   name: string;
   state: S,
   actions: Actions<S>,
   effects: {
-    [key: string]: Effect<D>
+    [key: string]: Effect<S, D>
   },
   effectsDep?: D
 }
