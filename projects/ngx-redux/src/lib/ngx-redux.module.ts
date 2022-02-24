@@ -3,7 +3,7 @@ import { createActions } from './createAction';
 import { createReducer } from './createReducer';
 // import { createStore } from './createStore';
 import { IStoreModule, State } from './models';
-import { NgxReduxStore } from './ngx-redux.store';
+import { NgxReduxStore } from './store';
 import { STORE_RPOVIDERS, MODULE_CONFIG, ACTIONS_PROVIDERS } from './token';
 import { createStore, Reducer, Action, Store } from 'redux';
 

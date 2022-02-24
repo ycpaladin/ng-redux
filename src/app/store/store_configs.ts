@@ -1,26 +1,4 @@
-// import { ActionFunction } from './../../../projects/ngx-redux/src/lib/models';
-
-
-// import { Observable, of } from "rxjs";
-
 import { IStoreModule, Actions } from "ngx-redux";
-
-
-// export type ActionFunction<S> = (this: S, ...args: any[]) => void;
-// export type Actions<S = any> = { [key: string]: ActionFunction<S> }
-
-// export type Effect<M> = (this: M, ...args: any[]) => void; // Action<S>;
-// export type EffectsDep = any[];
-// export interface IStoreModule<S, D = []> {
-//   name: string;
-//   state: S,
-//   actions: Actions<S>,
-//   effects: {
-//     [key: string]: Effect<IStoreModule<S, D>>
-//   },
-//   effectsDep?: D
-// }
-
 
 export interface User {
   username: string;
@@ -31,11 +9,11 @@ export interface IUserState {
   error: boolean;
 }
 
-export interface UserActions extends Actions<IUserState> {
-  login(this: IUserState): void;
-  loginSucess(this: IUserState, user: User): void;
-  loginFail(this: IUserState, error: any): void;
-  updateUser(this: IUserState, username: string, age: number): void;
+export interface UserActions {
+  login(): void;
+  loginSucess(user: User): void;
+  loginFail(error: any): void;
+  updateUser(username: string, age: number): void;
 }
 
 export const userModule: IStoreModule<IUserState, UserActions> = {
@@ -74,7 +52,7 @@ export const userModule: IStoreModule<IUserState, UserActions> = {
       }, 2000);
     }
   },
-  effectsDep: []
+  // effectsDep: []
 }
 
 // userModule.actions
