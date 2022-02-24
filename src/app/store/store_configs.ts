@@ -1,8 +1,9 @@
+// import { ActionFunction } from './../../../projects/ngx-redux/src/lib/models';
 
 
 // import { Observable, of } from "rxjs";
 
-import { IStoreModule } from "ngx-redux";
+import { IStoreModule, Actions } from "ngx-redux";
 
 
 // export type ActionFunction<S> = (this: S, ...args: any[]) => void;
@@ -30,7 +31,14 @@ export interface IUserState {
   error: boolean;
 }
 
-export const userModule: IStoreModule<IUserState> = {
+export interface UserActions extends Actions<IUserState> {
+  login(this: IUserState): void;
+  loginSucess(this: IUserState, user: User): void;
+  loginFail(this: IUserState, error: any): void;
+  updateUser(this: IUserState, username: string, age: number): void;
+}
+
+export const userModule: IStoreModule<IUserState, UserActions> = {
   name: 'user',
   state: {
     user: { username: 'kevin' },
@@ -61,7 +69,7 @@ export const userModule: IStoreModule<IUserState> = {
       setTimeout(() => {
         // this.actions.loginSucess({ name: 'kevin'})
         // this.actions.loginSucess(this.state, {name: 'kevin'})
-        this.actions.loginSucess.call(this.state, { name: 'kevin' })
+        this.actions.loginSucess.call(this.state, { username: 'kevin' })
         // this.effectsDep
       }, 2000);
     }

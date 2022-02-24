@@ -2,7 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { createActions } from './createAction';
 import { createReducer } from './createReducer';
 // import { createStore } from './createStore';
-import { IStoreModule } from './models';
+import { IStoreModule, State } from './models';
 import { NgxReduxStore } from './ngx-redux.store';
 import { STORE_RPOVIDERS, MODULE_CONFIG, ACTIONS_PROVIDERS } from './token';
 import { createStore, Reducer, Action, Store } from 'redux';
@@ -22,12 +22,12 @@ export class NgxReduxModule {
     }
   }
 
-  static forConfig(module: IStoreModule<any>): ModuleWithProviders<NgxReduxModule> {
-    let store: Store<any>;
+  static forConfig<S = State>(module: IStoreModule<S, any>): ModuleWithProviders<NgxReduxModule> {
+    let store: Store<S>;
     const actions = createActions(module); // , () => store
     const reducer = createReducer(actions, module.state);
     const plugin = (window as any)['__REDUX_DEVTOOLS_EXTENSION__'];
-    store = createStore(reducer, module.state, plugin && plugin());
+    store = createStore(reducer, module.state as any, plugin && plugin()); // TODO
     // __REDUX_DEVTOOLS_EXTENSION__
     return {
       ngModule: NgxReduxModule,

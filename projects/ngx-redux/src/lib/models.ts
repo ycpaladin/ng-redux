@@ -1,5 +1,5 @@
 
-import { Reducer, Action} from 'redux';
+import { Reducer, Action } from 'redux';
 // export type ReducerFunc
 export type Reducers = { [key: string]: Reducer };
 
@@ -14,12 +14,12 @@ export type Actions<S = any> = { [key: string]: ActionFunction<S> }
 
 export type Effect<M> = (this: M, ...args: any[]) => void; // Action<S>;
 export type EffectsDep = any[];
-export interface IStoreModule<S, D = []> {
+export interface IStoreModule<S = State, A = Actions<S>, D = []> {
   name: string;
   state: S,
-  actions: Actions<S>,
+  actions: A,
   effects: {
-    [key: string]: Effect<IStoreModule<S, D>>
+    [key: string]: Effect<IStoreModule<S, A, D>>
   },
   effectsDep?: D
 }
