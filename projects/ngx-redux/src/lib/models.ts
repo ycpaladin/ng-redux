@@ -1,5 +1,6 @@
 
-import { Reducer, Action } from 'redux';
+import { Reducer, Action, AnyAction } from 'redux';
+import { Observable } from 'rxjs';
 // export type ReducerFunc
 export type Reducers = { [key: string]: Reducer };
 
@@ -14,53 +15,23 @@ export type Actions<S = any> = { [key: string]: ActionFunction<S> }
 
 export type Effect<M> = (this: M, ...args: any[]) => void; // Action<S>;
 export type EffectsDep = any[];
-export interface IStoreModule<S = State, D = []> {
+export interface IStoreModule<S extends State, D = any[]> {
   name: string;
   state: S,
   actions: Actions<S>,
   effects: {
-    [key: string]: Effect<IStoreModule<S, D>>
+    [key: string]: Effect<D>
   },
   effectsDep?: D
 }
 
 
-export interface IStoreService<S = State, A = Actions<S>, M = IStoreModule> {
+export interface IStoreService<S extends State, A = Actions<S>, M = IStoreModule<S, A>> {
   module: M;
   actions: A;
+
+  dispatch(action: AnyAction): void;
+
+  select<R>(pathFunction: (state: S) => R): Observable<R>;
 }
-
-
-// export interface UserState {
-//   username: string;
-// }
-
-// export interface UserActions<S> extends Actions<S> {
-//   login(this: S): void;
-// }
-
-// const moduleConfig: IStoreModule<UserState, UserActions<UserState>> = {
-//   name: 'user',
-//   state: {
-//     username: 'kevin'
-//   },
-//   actions: {
-//     login() {
-//       // this.username
-//     }
-//   },
-//   effects: {
-
-//   }
-// }
-
-// const ss: IStoreService<UserState, UserActions<UserState>> = {
-//   module: moduleConfig,
-//   actions: {
-//     login(){
-
-//     }
-//   }
-// }
-
 

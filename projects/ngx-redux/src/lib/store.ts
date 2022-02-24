@@ -12,7 +12,7 @@ export class NgxReduxStore<S, A = Actions<S>> implements IStoreService<S, A>{
 
   constructor(
     @Inject(STORE_RPOVIDERS) public store: Store<S>,
-    @Inject(MODULE_CONFIG) public module: IStoreModule<any>,
+    @Inject(MODULE_CONFIG) public module: IStoreModule<any, any>,
   ) {
     // (this as any)
     mapActions.call(this as any, module as any); // TODO...
