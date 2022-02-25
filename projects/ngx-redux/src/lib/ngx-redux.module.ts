@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 import { createActions } from './createAction';
 import { createReducer } from './createReducer';
 // import { createStore } from './createStore';
@@ -29,14 +29,25 @@ export class NgxReduxModule {
     const plugin = (window as any)['__REDUX_DEVTOOLS_EXTENSION__'];
     store = createStore(reducer, module.state as any, plugin && plugin()); // TODO
     // __REDUX_DEVTOOLS_EXTENSION__
+
+
+    const providers: Provider[] = [
+      {
+        provide: module, useFactory() {
+          return new NgxReduxStore(store, module)
+        }, deps: []
+      }
+    ]
+
     return {
       ngModule: NgxReduxModule,
       providers: [
-        { provide: STORE_RPOVIDERS, useValue: store },
-        { provide: MODULE_CONFIG, useValue: module },
-        { provide: ACTIONS_PROVIDERS, useValue: actions },
-        NgxReduxStore,
+        // { provide: STORE_RPOVIDERS, useValue: store },
+        // { provide: MODULE_CONFIG, useValue: module },
+        // { provide: ACTIONS_PROVIDERS, useValue: actions },
+        // NgxReduxStore,
         // Store2
+        ...providers
       ]
     }
   }
