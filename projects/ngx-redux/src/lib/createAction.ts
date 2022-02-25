@@ -1,4 +1,4 @@
-import { ActionFunction, IStoreModule, } from './models';
+import { ActionFunction, Actions, IStoreModule, } from './models';
 import { Store } from 'redux';
 import { getActionType } from './utils';
 
@@ -22,7 +22,7 @@ export function createAction<S>(action: ActionFunction<S>, name: string) {
 }
 
 // , getStore: () => Store<S>
-export function createActions<S>(module: IStoreModule<S>) {
+export function createActions<S>(module: IStoreModule<S, Actions<S>>) {
   const keys = Object.keys(module.actions);
   return keys.reduce((prev, key) => {
     // prev.set
