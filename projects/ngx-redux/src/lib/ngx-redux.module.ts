@@ -22,22 +22,22 @@ export class NgxReduxModule {
     }
   }
 
-  static forConfig<S = State>(module: IStoreModule<S, any>): ModuleWithProviders<NgxReduxModule> {
-    let store: Store<S>;
-    const actions = createActions(module); // , () => store
-    const reducer = createReducer(actions, module.state);
-    const plugin = (window as any)['__REDUX_DEVTOOLS_EXTENSION__'];
-    store = createStore(reducer, module.state as any, plugin && plugin()); // TODO
-    // __REDUX_DEVTOOLS_EXTENSION__
+  static forConfig<S = State>(module: IStoreModule<S, any> | IStoreModule<S, any>[] | { [key: string]: IStoreModule<S, any> }): ModuleWithProviders<NgxReduxModule> {
 
+    // TODO... 三种情况处理
+    // const actions = createActions(module); // , () => store
+    // const reducer = createReducer(actions, module.state);
+    // const plugin = (window as any)['__REDUX_DEVTOOLS_EXTENSION__'];
+    // const store = createStore(reducer, module.state as any, plugin && plugin()); // TODO
+    // // __REDUX_DEVTOOLS_EXTENSION__
 
-    const providers: Provider[] = [
-      {
-        provide: module, useFactory() {
-          return new NgxReduxStore(store, module)
-        }, deps: []
-      }
-    ]
+    // const providers: Provider[] = [
+    //   {
+    //     provide: module, useFactory() {
+    //       return new NgxReduxStore(store, module)
+    //     }, deps: []
+    //   }
+    // ]
 
     return {
       ngModule: NgxReduxModule,
@@ -47,7 +47,7 @@ export class NgxReduxModule {
         // { provide: ACTIONS_PROVIDERS, useValue: actions },
         // NgxReduxStore,
         // Store2
-        ...providers
+        // ...providers
       ]
     }
   }
