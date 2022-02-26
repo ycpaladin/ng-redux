@@ -16,7 +16,7 @@ export interface UserActions extends Actions<IUserState> {
   updateUser(username: string, age: number): void;
 }
 
-export const userModule: IStoreModule<IUserState> = {
+export const userModule: IStoreModule<IUserState, UserActions> = {
   name: 'user',
   state: {
     user: { username: 'kevin' },
@@ -37,13 +37,17 @@ export const userModule: IStoreModule<IUserState> = {
       this.error = true;
     },
     updateUser(username: string, age: number) {
-      this.user!.username = username;
+      this.user = { username };
       console.log(username, age);
     }
   },
   effects: {
-    login(username: string, password: string) {
-      // this.storeService.actions
+    login(username: string, password: string) { // ofType(login)
+      /**
+       * pipe()
+       */
+      // this.module.
+      // this.actions.
       // return of(this.actions.loginSucess)
       setTimeout(() => {
         // this.actions.loginSucess({ name: 'kevin'})
@@ -51,6 +55,7 @@ export const userModule: IStoreModule<IUserState> = {
         // this.actions.loginSucess.call(this.state, { username: 'kevin' })
         // this.effectsDep
         // const [] = this;
+        this.loginSucess({ username: 'kevin' });
       }, 2000);
     }
   },
