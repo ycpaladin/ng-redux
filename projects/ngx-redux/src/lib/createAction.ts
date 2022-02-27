@@ -1,5 +1,5 @@
-import { ActionFunction, Actions, IStoreModule, } from './models';
-import { Store } from 'redux';
+import { ActionFunction, Actions, StateModule, } from './models';
+// import { Store } from 'redux';
 import { getActionType } from './utils';
 
 
@@ -22,16 +22,16 @@ export function createAction<S>(action: ActionFunction<S>, name: string) {
 }
 
 // , getStore: () => Store<S>
-export function createActions<S>(module: IStoreModule<S, Actions<S>>) {
+export function createActions<S>(module: StateModule<S, Actions<S>>) {
   const keys = Object.keys(module.actions);
   return keys.reduce((prev, key) => {
     // prev.set
     const action = createAction(module.actions[key], module.name);
-    const _actionFn = function (this: S, ...rest: any[]) {
+    const fn = function (this: S, ...rest: any[]) {
       action.fn.call(this, ...rest)
     }
 
-    prev.set(action.type, _actionFn); // action.fn
+    prev.set(action.type, fn); // action.fn
     return prev;
   }, new Map<string, ActionFunction<S>>())
 }

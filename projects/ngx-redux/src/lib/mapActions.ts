@@ -1,10 +1,10 @@
-import { Actions, IStoreModule } from "./models";
+import { Actions, StateModule } from "./models";
 import { NgxReduxStore } from "./store";
 import { getActionType } from "./utils";
 // import { Store } from 'redux';
 
 // , store: Store<S>
-export function mapActions<S, A extends Actions<S>>(this: NgxReduxStore<S, A>, module: IStoreModule<S, A>) {
+export function mapActions<S, A extends Actions<S>>(this: NgxReduxStore<S, A>, module: StateModule<S, A>) {
   // (this.actions as any) = {}
   Object.keys(module.actions).forEach((key) => {
     (this as any)[key] = (...rest: any[]) => {

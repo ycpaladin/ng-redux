@@ -2,7 +2,7 @@ import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 import { createActions } from './createAction';
 import { createReducer } from './createReducer';
 // import { createStore } from './createStore';
-import { IStoreModule, State } from './models';
+import { StateModule, State } from './models';
 import { NgxReduxStore } from './store';
 import { STORE_RPOVIDERS, MODULE_CONFIG, ACTIONS_PROVIDERS } from './token';
 import { createStore, Reducer, Action, Store } from 'redux';
@@ -22,7 +22,7 @@ export class NgxReduxModule {
     }
   }
 
-  static forConfig<S = State>(module: IStoreModule<S, any> | IStoreModule<S, any>[] | { [key: string]: IStoreModule<S, any> }): ModuleWithProviders<NgxReduxModule> {
+  static forConfig<S = State>(module: StateModule<S, any> | StateModule<S, any>[] | { [key: string]: StateModule<S, any> }): ModuleWithProviders<NgxReduxModule> {
 
     // TODO... 三种情况处理
     // const actions = createActions(module); // , () => store

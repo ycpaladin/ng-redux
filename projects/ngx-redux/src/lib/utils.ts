@@ -4,6 +4,8 @@
 //   [key: string]: any;
 // }
 
+import { StoreModuleConfig, StateModule } from "./models";
+
 // export const createAction = (name: string, actions: Actions) => {
 //   return Object.keys(actions).reduce<Action[]>((prev, key) => {
 //     const fun = actions[key];
@@ -25,6 +27,27 @@ export const getActionType = (moduleName: string, fnOrName: Function | string) =
   if (isFunction(fnOrName)) {
     return `[${moduleName}] ${fnOrName.name}`
   } else {
+    // const methodNames = fnOrName
     return `[${moduleName}] ${fnOrName}`
   }
 };
+
+
+// export const isStateModule = <S>(config: StoreModuleConfig<S>): config is StateModule<S, Actions<S>> => {
+//   // if (!Array.isArray(config) && !!config.name && !!config.state && !!config.actions) {
+//   //   return true
+//   // }
+//   // return false;
+//   return false;
+// }
+
+// export const isStoreModuleConfig = (config: StoreModuleConfig): config is StoreModuleConfig => {
+//   if (!Array.isArray(config) ) {
+//     const [anyKey] = Object.keys(config);
+//     const stateModuleConfig =  (config as any)[anyKey];
+//     if  (isStateModule(stateModuleConfig)) {
+//       return true;
+//     }
+//   }
+//   return false;
+// }

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IStoreModule, Actions, IStoreService, ActionFunction } from './models';
+import { StateModule, Actions, IStoreService, ActionFunction } from './models';
 import { MODULE_CONFIG, STORE_RPOVIDERS } from './token';
 import { Store, AnyAction } from 'redux';
 import { mapActions } from './mapActions';
@@ -8,13 +8,13 @@ import { mapActions } from './mapActions';
 @Injectable()
 export class NgxReduxStore<S, A extends Actions<S>> {
   // store!: Store<S>;
-  // module!: IStoreModule<S, A>
+  // module!: StateModule<S, A>
   // actions!: A;
   // [x: string]: ActionFunction<S> | undefined;
 
   constructor(
     @Inject(STORE_RPOVIDERS) public store: Store<S>,
-    @Inject(MODULE_CONFIG) public module: IStoreModule<S, A>,
+    @Inject(MODULE_CONFIG) public module: StateModule<S, A>,
   ) {
     // (this as any)
     mapActions.call(this as any, module as any); // TODO...

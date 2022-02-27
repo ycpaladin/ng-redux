@@ -1,4 +1,4 @@
-import { IStoreModule, Actions } from "ngx-redux";
+import { StateModule, Actions } from "ngx-redux";
 
 export interface User {
   username: string;
@@ -16,7 +16,7 @@ export interface UserActions extends Actions<IUserState> {
   updateUser(username: string, age: number): void;
 }
 
-export const userModule: IStoreModule<IUserState, UserActions> = {
+export const userModule: StateModule<IUserState, UserActions> = {
   name: 'user',
   state: {
     user: { username: 'kevin' },
