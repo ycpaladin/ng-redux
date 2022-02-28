@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux';
 // import { Actions } from "./store.service";
 // export type Action = {
 //   type: string;
@@ -22,6 +23,10 @@ export const isFunction = (obj: any): obj is Function => {
   return typeof obj === 'function';
 }
 
+// export const getActionName = (fnName: string) => {
+//   fnName.split()
+// }
+
 
 export const getActionType = (moduleName: string, fnOrName: Function | string) => {
   if (isFunction(fnOrName)) {
@@ -31,6 +36,14 @@ export const getActionType = (moduleName: string, fnOrName: Function | string) =
     return `[${moduleName}] ${fnOrName}`
   }
 };
+
+const regx = /^\[([a-zA-Z0-9]{0,})\]/;
+
+export const getModuleName = (actionType: string) => {
+  // const moduleName = regx.exec(action.type);
+  const [, moduleName] = actionType.toLowerCase().match(regx)! || [];
+  return moduleName;
+}
 
 
 // export const isStateModule = <S>(config: StoreModuleConfig<S>): config is StateModule<S, Actions<S>> => {

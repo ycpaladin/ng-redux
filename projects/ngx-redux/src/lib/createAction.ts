@@ -20,26 +20,37 @@ export function createAction<S>(action: ActionFunction<S>, name: string) {
     fn: action // .bind(state)
   }
 }
+// export function createActions<S>(module: StateModule<S, Actions<S>>):  Map<string, ActionFunction<S>>
+export function createActions<S>(module: StateModule<S, Actions<S>> | StateModule<S, Actions<S>>[]) {
+  if (Array.isArray(module)) {
+    return module.reduce((prev, curr) => {
+      const actions = createActions(curr);
+      // prev.set()
 
-// , getStore: () => Store<S>
-export function createActions<S>(module: StateModule<S, Actions<S>>) {
-  const keys = Object.keys(module.actions);
-  return keys.reduce((prev, key) => {
-    // prev.set
-    const action = createAction(module.actions[key], module.name);
-    const fn = function (this: S, ...rest: any[]) {
-      action.fn.call(this, ...rest)
+      actions.forEach((fn, key) => {
+        prev.set(key, fn);
+      });
+      return prev;
     }
-
-    prev.set(action.type, fn); // action.fn
-    return prev;
-  }, new Map<string, ActionFunction<S>>())
+      , new Map<string, ActionFunction<any>>());
+  } else {
+    const keys = Object.keys(module.actions);
+    return keys.reduce((prev, key) => {
+      const action = createAction(module.actions[key], module.name);
+      const fn = function (this: S, ...rest: any[]) {
+        action.fn.call(this, ...rest)
+      }
+      prev.set(action.type, fn); // action.fn
+      return prev;
+    }, new Map<string, ActionFunction<S>>())
+  }
 }
 
-
-// export function xxxFactory<S>(store: Store<S>, actions: Map<string, ActionFunction<S>>) {
-//   // const keys = Object.keys(actions);
-//   actions.forEach((fn, key) => {
-
-//   })
+// export function createActions2(...modules: StateModule<any, Actions<any>>[]) {
+//   return modules.reduce((prev, curr) => {
+//     const actions = createActions(curr);
+//     prev.set()
+//     return prev;
+//   }
+//   , new Map<string, ActionFunction<any>>());
 // }

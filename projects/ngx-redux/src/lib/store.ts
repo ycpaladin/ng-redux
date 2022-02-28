@@ -34,7 +34,8 @@ export class NgxReduxStore<S, A extends Actions<S>> {
 
   select<R>(pathFunction: (state: S) => R): Observable<R> {
     return new Observable<R>(subsciber => {
-      let value = pathFunction(this.getState());
+      const rootState = this.getState();
+      let value = pathFunction((rootState as any)[this.module.name]);
       subsciber.next(value);
       const unListen = this.store.subscribe(() => {
         const nextValue = pathFunction(this.getState());
