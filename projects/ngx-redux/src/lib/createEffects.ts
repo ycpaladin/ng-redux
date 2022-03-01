@@ -1,10 +1,12 @@
 import { AnyAction } from 'redux';
+import { StateModule } from './models';
 
-export function createEffects (){
+// { module: }
+export function createEffects(...modules: StateModule<any, any>[]) {
   // effect -> { type: [state module name] action name, fn: effectFn }
 
   // action -> effect.ofType()
-  return  function() {
+  return function () {
 
   }
 }
