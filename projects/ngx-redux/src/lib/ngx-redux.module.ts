@@ -1,10 +1,9 @@
 import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 import { createActions } from './createAction';
 import { createReducer } from './createReducer';
-// import { createStore } from './createStore';
 import { StateModule, State } from './models';
 import { NgxReduxStore } from './store';
-import { STORE_RPOVIDERS, MODULE_CONFIG, ACTIONS_PROVIDERS } from './token';
+import { STORE_RPOVIDERS } from './token';
 import { createStore, Reducer, Action, applyMiddleware, compose } from 'redux';
 import { mergeState } from './mergeState';
 import { createEffectMiddleware } from './middleware';

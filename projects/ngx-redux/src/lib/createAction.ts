@@ -35,7 +35,7 @@ export function createActions<S>(module: StateModule<S, Actions<S>> | StateModul
     return keys.reduce((prev, key) => {
       const action = createAction(module.actions[key], module.name);
       const fn = function (...rest: any[]) {
-        action.fn.call(initialRootState[module.name], ...rest); // TODO..
+        action.fn.call(initialRootState[module.name], ...rest);
       }
       prev.set(action.type, { fn, fnName: key, module }); // action.fn
       return prev;
