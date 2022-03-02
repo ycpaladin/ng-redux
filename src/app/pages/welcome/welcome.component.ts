@@ -18,7 +18,7 @@ export class WelcomeComponent implements OnInit {
   username: Observable<string | undefined>;
   isFetching$!: Observable<boolean>;
   update(): void {
-    this.store.login('kkkk', '123');
+    (this as any).store.login('kkkk', '123');
     // this.store.updateUser!
     // this.store.actions.updateUser()
   }
