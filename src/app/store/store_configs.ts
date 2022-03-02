@@ -11,11 +11,18 @@ export interface IUserState {
   error: boolean;
 }
 
+// export interface UserActions extends Actions<IUserState> {
+//   login(this: IUserState, username: string, password: string): void;
+//   loginSucess(this: IUserState,user: User): void;
+//   loginFail(this: IUserState,error: any): void;
+//   updateUser(this: IUserState,username: string, age: number): void;
+// }
+
 export interface UserActions extends Actions<IUserState> {
-  login(this: IUserState, username: string, password: string): void;
-  loginSucess(this: IUserState,user: User): void;
-  loginFail(this: IUserState,error: any): void;
-  updateUser(this: IUserState,username: string, age: number): void;
+  login(username: string, password: string): void;
+  loginSucess(user: User): void;
+  loginFail(error: any): void;
+  updateUser(username: string, age: number): void;
 }
 
 export const userModule: StateModule<IUserState, UserActions> = {
@@ -39,9 +46,12 @@ export const userModule: StateModule<IUserState, UserActions> = {
       this.error = true;
     },
     updateUser(username: string, age: number) {
-      this.user = { username };
-      console.log(username, age);
+
     }
+    // updateUser(username: string, age: number) {
+    //   this.user = { username };
+    //   console.log(username, age);
+    // }
   },
   effects: {
     login(username: string, password: string) { // ofType(login)
@@ -49,7 +59,7 @@ export const userModule: StateModule<IUserState, UserActions> = {
       // setTimeout
       // setTimeout(() => {
       //   // 上下文不一致
-        (this as any).loginSucess({ username: 'lalalalal' });
+      (this).loginSucess({ username: 'lalalalal' });
       // }, 2000);
       // Observable
       // return of({ username: 'lalalalal' }).pipe(
@@ -58,6 +68,10 @@ export const userModule: StateModule<IUserState, UserActions> = {
       // Promise
       // return Promise.resolve((this as any).loginSucess({ username: 'lalalalal' })); // .then(() => )
     },
+    loginSucess() {
+      // this.
+    },
+
   },
   effectsDep: [1, 2]
 }
