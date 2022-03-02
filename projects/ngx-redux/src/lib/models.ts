@@ -11,14 +11,15 @@ export type Actions<S = Object> = { [key: string]: ActionFunction<S> } // | Acti
 
 export type Effect<M> = (this: M, ...args: any[]) => void | Promise<void> | Observable<void>;
 export type EffectsDep = any[];
+
+type Effects<S, A extends Actions<S>> = {
+  [key in keyof A]?: Effect<A & IStoreService<S, A>>
+}
 export interface StateModule<S extends State, A extends Actions<S>, D = any[]> {
   name: string;
   state: S,
   actions: A,
-  effects: {
-    // D &
-    [key: string]: Effect<A & IStoreService<S, A>>
-  },
+  effects: Effects<S, A>,
   effectsDep?: D
 }
 

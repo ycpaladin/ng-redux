@@ -34,10 +34,14 @@ export function createActions<S>(module: StateModule<S, Actions<S>> | StateModul
     const keys = Object.keys(module.actions);
     return keys.reduce((prev, key) => {
       const action = createAction(module.actions[key], module.name);
-      const fn = function (...rest: any[]) {
-        action.fn.call(initialRootState[module.name], ...rest);
-      }
-      prev.set(action.type, { fn, fnName: key, module }); // action.fn
+      // const fn = function (...rest: any[]) {
+      //   action.fn.call(initialRootState[module.name], ...rest);
+      // }
+      prev.set(action.type, {
+        fn: action.fn.bind(initialRootState[module.name]),
+        fnName: key,
+        module
+      }); // action.fn
       return prev;
     }, new Map<string, ActionModule<S>>())
   }

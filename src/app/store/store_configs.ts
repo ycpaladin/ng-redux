@@ -1,4 +1,6 @@
 import { StateModule, Actions } from "ngx-redux";
+import { of } from "rxjs";
+import { map } from "rxjs/operators";
 
 export interface User {
   username: string;
@@ -43,19 +45,19 @@ export const userModule: StateModule<IUserState, UserActions> = {
   },
   effects: {
     login(username: string, password: string) { // ofType(login)
-      /**
-       * pipe()
-       */
-      // this.module.
-      // this.actions.
-      // return of(this.actions.loginSucess)
       console.log(username, password);
-      setTimeout(() => {
-        // this.loginSucess({username: 'hhhhhhh'});
-        // 上下文不一致
+      // setTimeout
+      // setTimeout(() => {
+      //   // 上下文不一致
         (this as any).loginSucess({ username: 'lalalalal' });
-      }, 2000);
-    }
+      // }, 2000);
+      // Observable
+      // return of({ username: 'lalalalal' }).pipe(
+      //   map(user => (this as any).loginSucess(user))
+      // )
+      // Promise
+      // return Promise.resolve((this as any).loginSucess({ username: 'lalalalal' })); // .then(() => )
+    },
   },
   effectsDep: [1, 2]
 }

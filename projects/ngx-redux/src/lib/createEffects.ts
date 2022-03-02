@@ -6,9 +6,10 @@ export function createEffects(...modules: StateModule<any, any>[]) {
   modules.forEach(module => {
     // effects
     Object.keys(module.effects).forEach(key => {
-      const _effectFn = module.effects[key];
-      const effectFn = function(this: any, ...rest: any[]) {
-        _effectFn.call(this, ...rest);
+      // const effectFn = module.effects[key]!;
+      const _effectFn = module.effects[key]!;
+      const effectFn = function (this: any, ...rest: any[]) {
+        return _effectFn.call(this, ...rest);
       }
       effects.set(getActionType(module.name, key), effectFn)
     })
