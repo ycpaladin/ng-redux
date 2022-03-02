@@ -1,55 +1,31 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { StateModule, Actions, IStoreService, ActionFunction } from './models';
+import { StateModule, Actions, SelectContext, PathFunction } from './models';
 import { MODULE_CONFIG, STORE_RPOVIDERS } from './token';
 import { Store, AnyAction } from 'redux';
 import { mapActions } from './mapActions';
+import { select } from './select';
 
 @Injectable()
-export class NgxReduxStore<S, A extends Actions<S>> {
-  // store!: Store<S>;
-  // module!: StateModule<S, A>
-  // actions!: A;
-  // [x: string]: ActionFunction<S> | undefined;
+export class NgxReduxStore<S, A extends Actions<S>> implements SelectContext<S>{
+
+  select<S, R>(pathFunction: PathFunction<S, R>): Observable<R> {
+    return select.call(this as any, pathFunction as any) as any;
+  }
 
   constructor(
     @Inject(STORE_RPOVIDERS) public store: Store<S>,
     @Inject(MODULE_CONFIG) public module: StateModule<S, A>,
   ) {
-    // (this as any)
     mapActions.call(this as any, module as any); // TODO...
-
-    setTimeout(() => {
-      console.log('==。', this)
-    }, 0);
   }
 
   getState(): S {
     return this.store.getState();
   }
 
-  dispatch(action: AnyAction): void {
+  dispatch(action: AnyAction) {
     this.store.dispatch(action);
   }
 
-  select<R>(pathFunction: (state: S) => R): Observable<R> {
-    return new Observable<R>(subsciber => {
-      const rootState = this.getState();
-      let value = pathFunction((rootState as any)[this.module.name]);
-      subsciber.next(value);
-      const unListen = this.store.subscribe(() => {
-        const rootState = this.getState();
-        const nextValue = pathFunction((rootState as any)[this.module.name]);
-        // const nextValue = pathFunction(this.getState());
-        if (nextValue !== value) {
-          value = nextValue;
-          subsciber.next(value);
-        }
-      });
-      return () => {
-        unListen();
-      }
-    })
-    // return
-  }
 }

@@ -1,4 +1,4 @@
-import { Store, AnyAction } from 'redux';
+import { Store, AnyAction, Dispatch, Unsubscribe } from 'redux';
 import { Observable } from 'rxjs';
 
 export type State = { [key: string]: any }
@@ -36,3 +36,16 @@ export type IStoreService<S, A extends Actions<S>> = {
   dispatch(action: AnyAction): void;
   select<R>(pathFunction: (state: S) => R): Observable<R>;
 } & A; // A
+
+
+export interface SelectContext<S> {
+  store: {
+    dispatch: Dispatch<AnyAction>;
+    getState(): S;
+    subscribe(listener: () => void): Unsubscribe;
+  };
+  module: StateModule<S, any>;
+}
+
+
+export type PathFunction<S, R> = (state: S) => R;

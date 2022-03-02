@@ -55,11 +55,17 @@ export const userModule: StateModule<IUserState, UserActions> = {
   },
   effects: {
     login(username: string, password: string) { // ofType(login)
-      console.log(username, password);
+      // console.log(username, password);
       // setTimeout
       // setTimeout(() => {
       //   // 上下文不一致
-      (this).loginSucess({ username: 'lalalalal' });
+      // this
+      return this.select(s => {
+        return s.user!.username;
+      }).pipe(
+        map(un => this.loginSucess({ username: 'lalalalal======>' + un + '===>' + username }))
+      )
+
       // }, 2000);
       // Observable
       // return of({ username: 'lalalalal' }).pipe(

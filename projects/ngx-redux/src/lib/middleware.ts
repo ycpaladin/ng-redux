@@ -1,7 +1,8 @@
 import { Middleware, Action } from 'redux';
 import { isObservable } from 'rxjs';
 import { mapActions } from './mapActions';
-import { Effect, ActionConfig } from './models';
+import { Effect, ActionConfig, PathFunction } from './models';
+import { select } from './select';
 
 export type CreateEffectMiddleware = (actions: ActionConfig<any>, effects: Map<string, Effect<any>>) => Middleware;
 
@@ -16,13 +17,26 @@ export const createEffectMiddleware: CreateEffectMiddleware = (actions: ActionCo
         module,
         dispatch,
         store: api,
-        select: () => undefined,
+        select: <S, R>(pathFun: PathFunction<S, R>) => {
+          return select.call({
+            module,
+            store: {
+              ...api,
+              subscribe: (listenr) => {
+                return () => {
+                  // ???
+                }
+              }
+            }
+          }, pathFun as any)
+        },  // TODO...
       }
       actions.forEach(({ module: m }) => {
         if (m === module) {
-          mapActions.call(context, m as any);
+          mapActions.call(context, m as any); // 把 actions 挂到 context上
         }
-      })
+      });
+      // 调用effect方法
       const result = effectFn.apply(
         context,
         Array.from({
@@ -31,6 +45,7 @@ export const createEffectMiddleware: CreateEffectMiddleware = (actions: ActionCo
         })
       );
 
+      // 返回值如果是一个可观察对象, 则还要订阅
       if (isObservable(result)) {
         const sub$ = result.subscribe(() =>
           Promise.resolve().then(() => sub$.unsubscribe())
