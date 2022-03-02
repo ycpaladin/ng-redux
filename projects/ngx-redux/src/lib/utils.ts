@@ -23,6 +23,13 @@ export const isFunction = (obj: any): obj is Function => {
   return typeof obj === 'function';
 }
 
+export const isPromise = (obj: any): obj is Promise<any> => {
+  if (obj && isFunction(obj.then)) {
+    return true;
+  }
+  return false;
+}
+
 // export const getActionName = (fnName: string) => {
 //   fnName.split()
 // }

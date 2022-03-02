@@ -1,5 +1,5 @@
 import { getActionType, getModuleName } from './utils';
-import { ActionFunction, Actions, StateModule } from './models';
+import { ActionConfig, ActionFunction, Actions, StateModule } from './models';
 import { AnyAction } from 'redux';
 
 export function createReducer2<S>(actions: Map<string, ActionFunction<S>>, initialState: S) {
@@ -18,17 +18,20 @@ export function createReducer2<S>(actions: Map<string, ActionFunction<S>>, initi
 }
 
 
-export function createReducer<S>(actions: Map<string, ActionFunction<S>>, initialState: { [key: string]: any }) {
+export function createReducer<S>(actions: ActionConfig<S>, initialState: { [key: string]: any }) {
   // let initialState: { [key: string]: any }; //= null;
   return (state = initialState, action: AnyAction) => {
-    const fn = actions.get(action.type);
-    if (fn) {
+    const config = actions.get(action.type);
+    if (config) {
       const { type, ...rest } = action;
+      const { fn, module } = config
       const params = Object.keys(rest).map(key => rest[key]);
       // fn => moduleName
-      const moduleName = getModuleName(action.type);
+      // const moduleName = getModuleName(action.type);
       // const moduleName = modules.find(item => action.type === getActionType(item.))
-      fn.apply(state[moduleName] || state, params);
+      fn.apply(state[module.name] || state, params);
+      // fn.apply(null as any, params);
+
       // return {
       //   ...state
       // }

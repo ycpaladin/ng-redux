@@ -10,10 +10,10 @@ export interface IUserState {
 }
 
 export interface UserActions extends Actions<IUserState> {
-  login(): void;
-  loginSucess(user: User): void;
-  loginFail(error: any): void;
-  updateUser(username: string, age: number): void;
+  login(this: IUserState, username: string, password: string): void;
+  loginSucess(this: IUserState,user: User): void;
+  loginFail(this: IUserState,error: any): void;
+  updateUser(this: IUserState,username: string, age: number): void;
 }
 
 export const userModule: StateModule<IUserState, UserActions> = {
@@ -49,13 +49,11 @@ export const userModule: StateModule<IUserState, UserActions> = {
       // this.module.
       // this.actions.
       // return of(this.actions.loginSucess)
+      console.log(username, password);
       setTimeout(() => {
-        // this.actions.loginSucess({ name: 'kevin'})
-        // this.actions.loginSucess(this.state, {name: 'kevin'})
-        // this.actions.loginSucess.call(this.state, { username: 'kevin' })
-        // this.effectsDep
-        // const [] = this;
-        this.loginSucess({ username: 'kevin' });
+        // this.loginSucess({username: 'hhhhhhh'});
+        // 上下文不一致
+        (this as any).loginSucess({ username: 'lalalalal' });
       }, 2000);
     }
   },

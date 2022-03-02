@@ -8,6 +8,7 @@ import { STORE_RPOVIDERS, MODULE_CONFIG, ACTIONS_PROVIDERS } from './token';
 import { createStore, Reducer, Action, applyMiddleware, compose } from 'redux';
 import { mergeState } from './mergeState';
 import { createEffectMiddleware } from './middleware';
+import { createEffects } from './createEffects';
 
 
 @NgModule({})
@@ -27,15 +28,18 @@ export class NgxReduxModule {
   static forConfig<S = State>(...module: StateModule<S, any>[]): ModuleWithProviders<NgxReduxModule> {
 
     // TODO... 三种情况处理
-    const actions = createActions(module); // , () => store
-    const rootState = mergeState(module);
-    const reducer = createReducer(actions, rootState);
-    const plugin = (window as any)['__REDUX_DEVTOOLS_EXTENSION__'];
-    const middleware = createEffectMiddleware(actions, ...module);
-    const enhancer = applyMiddleware(middleware) // , plugin && plugin()
+    const initialRootState = mergeState(module);
+    const actions = createActions(module, initialRootState); // , () => store
+    const reducer = createReducer(actions, initialRootState);
+    const effects = createEffects(...module);
+    const composeEnhaners = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
+
+    const middleware = createEffectMiddleware(actions, effects);
+    const enhancer = composeEnhaners(applyMiddleware(middleware)) // , plugin && plugin()
     // const enhancer = applyMiddleware(middleware,  plugin && plugin())
-    const store = createStore(reducer as any, rootState, enhancer); // TODO
+    const store = createStore(reducer as any, initialRootState, enhancer); // TODO
     // // __REDUX_DEVTOOLS_EXTENSION__
+
 
     const providers: Provider[] = [
 
