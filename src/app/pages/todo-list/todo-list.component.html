@@ -1,1 +1,30 @@
-<p>todo-list works!</p>
+<div nz-row>
+  <div nz-col nzSpan="16">
+    <input nz-input [(ngModel)]="text">
+  </div>
+  <div nz-col nzSpan="6" nzPush="2">
+    <button nz-button nzType="primary" (click)="add()">Add</button>
+  </div>
+</div>
+<nz-list [nzDataSource]="$any(todoList$|async)" [nzRenderItem]="item">
+  <ng-template #item let-i>
+    <nz-list-item>
+      <nz-list-item-meta [nzTitle]="itemTitle">
+        <ng-template #itemTitle>
+          <a (click)="completed(i.id)" *ngIf="!i.completed else completedTemplate">
+            {{i.title}}
+          </a>
+          <ng-template #completedTemplate>
+            <i class="completed">{{i.title}}</i>
+          </ng-template>
+        </ng-template>
+      </nz-list-item-meta>
+    </nz-list-item>
+  </ng-template>
+</nz-list>
+<nz-radio-group [(ngModel)]="status" (ngModelChange)="onStatusChange($event)">
+  <label nz-radio [nzValue]="1">ALL</label>
+  <label nz-radio [nzValue]="2">Completed</label>
+  <label nz-radio [nzValue]="3">Ongoing</label>
+</nz-radio-group>
+{{statistics$|async}}

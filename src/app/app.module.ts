@@ -17,6 +17,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { userModule } from './store/store_configs';
 import { NgxReduxModule } from 'ngx-redux';
+import { TodoListStateModule } from './store/todoList';
 
 registerLocaleData(zh);
 
@@ -33,7 +34,7 @@ registerLocaleData(zh);
     IconsProviderModule,
     NzLayoutModule,
     NzMenuModule,
-    NgxReduxModule.forConfig(userModule)
+    NgxReduxModule.forRoot(userModule, TodoListStateModule)
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]

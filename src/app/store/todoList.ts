@@ -1,52 +1,81 @@
-import { StateModule, Actions } from "ngx-redux";
+import { StateModule } from "ngx-redux";
 
-export interface User {
-  username: string;
+export interface TodoItem {
+  id?: number;
+  title: string;
+  completed: boolean;
 }
-export interface IUserState {
-  user: User | undefined;
-  isFetching: boolean;
-  error: boolean;
-}
-
-export interface UserActions extends Actions<IUserState> {
-  login(username: string, password: string): void;
-  loginSucess(user: User): void;
-  loginFail(error: any): void;
-  updateUser(username: string, age: number): void;
+export interface TodoListState {
+  data: {
+    [key: number]: TodoItem;
+  },
+  source: TodoItem[];
+  sort: number[];
+  viewType: ViewType;
 }
 
-export const userModule: StateModule<IUserState, UserActions> = {
-  name: 'user',
+export type ViewType = 1 | 2 | 3;
+
+export interface TodoActions {
+  addTodoItem(item: TodoItem): void;
+  addTodoItemSucess(id: number): void;
+  completed(id: number): void;
+  filter(viewType: ViewType): void;
+}
+
+export const TodoListStateModule: StateModule<TodoListState, TodoActions> = {
+  name: 'todo-list',
   state: {
-    user: { username: 'kevin' },
-    isFetching: false,
-    error: false
+    source: [],
+    data: {
+    },
+    sort: [],
+    viewType: 1
   },
   actions: {
-    login() {
-      // this.isFetching = true;
-      // this.error = false;
+    addTodoItem(item: TodoItem) {
+      const [maxId = 0] = this.sort.sort((a, b) => b - a);
+      item.id = maxId + 1;
+      if (this.viewType !== 2) {
+        this.data[item.id] = item;
+      }
+      this.source.push(item);
     },
-    loginSucess(user: User) {
-      // this.isFetching = false;
-      // this.user = user;
+    addTodoItemSucess(id: number) {
+      this.sort = [...this.sort, id];
     },
-    loginFail(error) {
-      // this.isFetching = false;
-      // this.error = true;
+    completed(id: number) {
+      const item = this.data[id];
+      item.completed = true;
     },
-    updateUser(username: string, age: number) {
-      // this.user = { username };
-      // console.log(username, age);
+    filter(viewType: ViewType) {
+      this.viewType = viewType;
+      if (viewType === 1) {
+        this.data = filter(this.source, () => true);
+      } else if (viewType === 2) {
+        // completed = true
+        this.data = filter(this.source, (item) => item.completed);
+      } else {
+        // completed = false
+        this.data = filter(this.source, (item) => !item.completed);
+      }
     }
   },
   effects: {
-    login(username: string, password: string) { // ofType(login)
-
+    addTodoItem(item: TodoItem) {
+      this.addTodoItemSucess(item.id!);
     }
   },
   effectsDep: [1, 2]
 }
 
 // userModule.actions
+
+const filter = (source: TodoItem[], fn: (item: TodoItem) => boolean) => {
+  return source.reduce((prev, curr) => {
+    if (fn(curr)) {
+      prev[curr.id!] = curr;
+    }
+    return prev;
+  }, {} as { [key: number]: TodoItem })
+}

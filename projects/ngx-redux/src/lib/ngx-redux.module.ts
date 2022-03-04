@@ -13,18 +13,18 @@ import { createEffects } from './createEffects';
 @NgModule({})
 export class NgxReduxModule {
 
-  static forRoot(reducers: Reducer<any, Action>, inittalState?: any): ModuleWithProviders<NgxReduxModule> {
-    const store = createStore(reducers, inittalState);
-    return {
-      ngModule: NgxReduxModule,
-      providers: [
-        { provide: STORE_RPOVIDERS, useValue: store },
-        NgxReduxStore
-      ]
-    }
-  }
+  // static forRoot(reducers: Reducer<any, Action>, inittalState?: any): ModuleWithProviders<NgxReduxModule> {
+  //   const store = createStore(reducers, inittalState);
+  //   return {
+  //     ngModule: NgxReduxModule,
+  //     providers: [
+  //       { provide: STORE_RPOVIDERS, useValue: store },
+  //       NgxReduxStore
+  //     ]
+  //   }
+  // }
 
-  static forConfig<S = State>(...module: StateModule<S, any>[]): ModuleWithProviders<NgxReduxModule> {
+  static forRoot(...module: StateModule<any, any>[]): ModuleWithProviders<NgxReduxModule> {
 
     // TODO... 三种情况处理
     const initialRootState = mergeState(module);

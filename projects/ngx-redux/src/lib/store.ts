@@ -7,7 +7,7 @@ import { mapActions } from './mapActions';
 import { select } from './select';
 
 @Injectable()
-export class NgxReduxStore<S> implements SelectContext<S>{
+export class NgxReduxStore<S, A> implements SelectContext<S>{
 
   select<S, R>(pathFunction: PathFunction<S, R>): Observable<R> {
     return select.call(this as any, pathFunction as any) as any;
@@ -15,7 +15,7 @@ export class NgxReduxStore<S> implements SelectContext<S>{
 
   constructor(
     @Inject(STORE_RPOVIDERS) public store: Store<S>,
-    @Inject(MODULE_CONFIG) public module: StateModule<S>,
+    @Inject(MODULE_CONFIG) public module: StateModule<S, A>,
   ) {
     mapActions.call(this as any, module as any); // TODO...
   }

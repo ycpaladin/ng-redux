@@ -30,7 +30,6 @@ export interface ActionModule<S> {
 export type ActionConfig<S> = Map<string, ActionModule<S>>;
 
 export type IStoreService<S, A> = {
-  [key: string]: any;
   module: StateModule<S, A>;
   store: Store<S, AnyAction>;
   dispatch(action: AnyAction): void;
