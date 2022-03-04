@@ -1,7 +1,7 @@
-import { Actions, StateModule } from "./models";
+import { StateModule } from "./models";
 
 
-export function mergeState<S>(module: StateModule<S, Actions<S>> | StateModule<S, Actions<S>>[]){
+export function mergeState<S>(module: StateModule<S> | StateModule<S>[]) {
   if (Array.isArray(module)) {
     const initialState = module.reduce((prev, curr) => {
       prev[curr.name] = curr.state;

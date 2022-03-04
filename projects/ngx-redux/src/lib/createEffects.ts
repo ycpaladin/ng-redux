@@ -1,12 +1,10 @@
-import { Effect, StateModule } from './models';
+import { StateModule } from './models';
 import { getActionType } from './utils';
 
 export function createEffects(...modules: StateModule<any, any>[]) {
-  const effects = new Map<string, Effect<any>>();
+  const effects = new Map<string, Function>();
   modules.forEach(module => {
-    // effects
     Object.keys(module.effects).forEach(key => {
-      // const effectFn = module.effects[key]!;
       const _effectFn = module.effects[key]!;
       const effectFn = function (this: any, ...rest: any[]) {
         return _effectFn.call(this, ...rest);

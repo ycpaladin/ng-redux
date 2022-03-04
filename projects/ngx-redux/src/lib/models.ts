@@ -1,35 +1,35 @@
 import { Store, AnyAction, Dispatch, Unsubscribe } from 'redux';
 import { Observable } from 'rxjs';
 
-export type State = { [key: string]: any }
-export type ActionFunction<S> = (this: S, ...args: any[]) => void;
-export type Actions<S> = {
-  [key: string]: ActionFunction<S>;
-}
-export type Action<S, A> = { [key in keyof A]: ActionFunction<S> }  //  A[key]
+// type ThisParameterType<T> = T extends (this: unknown, ...args: any[]) => any
+//  T extends (this: infer U, ...args: any[]) => any
+//   ? U
+//   : unknown
 
-export type Effect<M> = (this: M, ...args: any[]) => void | Promise<void> | Observable<void>;
+
+export type State = { [key: string]: any }
+// export type ActionFunction<S> = (this: S, ...args: any[]) => void;
 export type EffectsDep = any[];
 
-type Effects<S, A extends Actions<S>> = {
-  [key in keyof A]?: Effect<A & IStoreService<S, A>>
-}
-export interface StateModule<S, A extends Actions<S>, D = any[]> {
+type Effects<S, A> = {
+  [key in keyof A]?: A[key] // Effect<A & IStoreService<S, A>>
+} & ThisType<A & IStoreService<S, A>>
+export interface StateModule<S, A = any, D = any[]> {
   name: string;
   state: S,
-  actions: Action<S, A>,
+  actions: A & ThisType<S>,
   effects: Effects<S, A>,
   effectsDep?: D
 }
 
 export interface ActionModule<S> {
-  fn: ActionFunction<S>;
+  fn: Function;
   fnName: string;
-  module: StateModule<S, any>;
+  module: StateModule<S>;
 }
 export type ActionConfig<S> = Map<string, ActionModule<S>>;
 
-export type IStoreService<S, A extends Actions<S>> = {
+export type IStoreService<S, A> = {
   [key: string]: any;
   module: StateModule<S, A>;
   store: Store<S, AnyAction>;

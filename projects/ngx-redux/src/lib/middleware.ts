@@ -1,12 +1,12 @@
 import { Middleware, Action } from 'redux';
 import { isObservable } from 'rxjs';
 import { mapActions } from './mapActions';
-import { Effect, ActionConfig, PathFunction } from './models';
+import { ActionConfig, PathFunction } from './models';
 import { select } from './select';
 
-export type CreateEffectMiddleware = (actions: ActionConfig<any>, effects: Map<string, Effect<any>>) => Middleware;
+export type CreateEffectMiddleware = (actions: ActionConfig<any>, effects: Map<string, Function>) => Middleware;
 
-export const createEffectMiddleware: CreateEffectMiddleware = (actions: ActionConfig<any>, effects: Map<string, Effect<any>>) => (api) => (dispatch) => (action: Action<string>) => {
+export const createEffectMiddleware: CreateEffectMiddleware = (actions: ActionConfig<any>, effects: Map<string, Function>) => (api) => (dispatch) => (action: Action<string>) => {
   Promise.resolve().then(() => {
     const { type, ...rest } = action;
     const actionConfig = actions.get(type);
@@ -29,7 +29,7 @@ export const createEffectMiddleware: CreateEffectMiddleware = (actions: ActionCo
               }
             }
           }, pathFun as any)
-        },  // TODO...
+        },
       }
       actions.forEach(({ module: m }) => {
         if (m === module) {

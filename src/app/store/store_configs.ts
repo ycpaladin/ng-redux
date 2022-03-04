@@ -1,4 +1,4 @@
-import { StateModule, Actions } from "ngx-redux";
+import { StateModule } from "ngx-redux";
 import { of } from "rxjs";
 import { map } from "rxjs/operators";
 
@@ -18,7 +18,7 @@ export interface IUserState {
 //   updateUser(this: IUserState,username: string, age: number): void;
 // }
 
-export interface UserActions extends Actions<IUserState> {
+export interface UserActions {
   login(username: string, password: string): void;
   loginSucess(user: User): void;
   loginFail(error: any): void;
@@ -59,12 +59,12 @@ export const userModule: StateModule<IUserState, UserActions> = {
       // setTimeout
       // setTimeout(() => {
       //   // 上下文不一致
-      // this
-      return this.select(s => {
-        return s.user!.username;
-      }).pipe(
-        map(un => this.loginSucess({ username: 'lalalalal======>' + un + '===>' + username }))
-      )
+      // this.
+      // return this.select(s => {
+      //   return s.user!.username;
+      // }).pipe(
+      //   map(un => this.loginSucess({ username: 'lalalalal======>' + un + '===>' + username }))
+      // )
 
       // }, 2000);
       // Observable
@@ -72,7 +72,7 @@ export const userModule: StateModule<IUserState, UserActions> = {
       //   map(user => (this as any).loginSucess(user))
       // )
       // Promise
-      // return Promise.resolve((this as any).loginSucess({ username: 'lalalalal' })); // .then(() => )
+      return Promise.resolve(this.loginSucess({ username: 'lalalalal' })); // .then(() => )
     },
     loginSucess() {
       // this.
