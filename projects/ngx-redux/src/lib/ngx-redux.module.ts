@@ -38,8 +38,8 @@ export class NgxReduxModule {
         providers.push(
           {
             provide: m, useFactory() {
-              return new NgxReduxStore(store, m as any)
-            }, deps: []
+              return new NgxReduxStore(store, m)
+            }, deps: m.effectsDep
           }
         )
       })

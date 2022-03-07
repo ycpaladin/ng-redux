@@ -64,9 +64,10 @@ export const TodoListStateModule: StateModule<TodoListState, TodoActions> = {
   effects: {
     addTodoItem(item: TodoItem) {
       this.addTodoItemSucess(item.id!);
+      // this.÷
     }
   },
-  effectsDep: [1, 2]
+  effectsDep: []
 }
 
 // userModule.actions

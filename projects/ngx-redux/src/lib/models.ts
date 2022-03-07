@@ -11,14 +11,14 @@ export type State = { [key: string]: any }
 // export type ActionFunction<S> = (this: S, ...args: any[]) => void;
 export type EffectsDep = any[];
 
-type Effects<S, A> = {
+type Effects<S, A, D > = {
   [key in keyof A]?: A[key] // Effect<A & IStoreService<S, A>>
-} & ThisType<A & IStoreService<S, A>>
+} & ThisType<A & IStoreService<S, A> & { deps: D}>
 export interface StateModule<S, A = any, D = any[]> {
   name: string;
   state: S,
   actions: A & ThisType<S>,
-  effects: Effects<S, A>,
+  effects: Effects<S, A, D>,
   effectsDep?: D
 }
 

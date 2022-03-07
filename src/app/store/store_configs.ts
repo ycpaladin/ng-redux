@@ -79,7 +79,7 @@ export const userModule: StateModule<IUserState, UserActions> = {
     },
 
   },
-  effectsDep: [1, 2]
+  effectsDep: []
 }
 
 // userModule.actions
