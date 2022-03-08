@@ -1,16 +1,10 @@
 import { StateModule } from "./models";
 
 
-export function mergeState<S>(module: StateModule<S> | StateModule<S>[]) {
-  if (Array.isArray(module)) {
-    const initialState = module.reduce((prev, curr) => {
-      prev[curr.name] = curr.state;
-      return prev;
-    }, {} as { [key: string]: any })
-    return initialState;
-  } else {
-    return {
-      [module.name]: module.state
-    };
-  }
+export function mergeState(module: StateModule<any>[]) {
+  const initialState = module.reduce((prev, curr) => {
+    prev[curr.name] = curr.state;
+    return prev;
+  }, {} as { [key in string]: any })
+  return initialState;
 }

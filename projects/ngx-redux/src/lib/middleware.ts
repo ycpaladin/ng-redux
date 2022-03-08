@@ -34,6 +34,7 @@ export const createEffectMiddleware: CreateEffectMiddleware = (actions: ActionCo
       actions.forEach(({ module: m }) => {
         if (m === module) {
           mapActions.call(context, m as any); // 把 actions 挂到 context上
+          (context as any).deps = m.effectsDeps || [];
         }
       });
       // 调用effect方法

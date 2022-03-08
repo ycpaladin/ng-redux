@@ -67,7 +67,7 @@ export const TodoListStateModule: StateModule<TodoListState, TodoActions> = {
       // this.÷
     }
   },
-  effectsDep: []
+  effectsDeps: []
 }
 
 // userModule.actions

@@ -13,14 +13,14 @@ import { createEffects } from './createEffects';
 @NgModule({})
 export class NgxReduxModule {
 
-  static forRoot(...module: StateModule<any, any>[]): ModuleWithProviders<NgxReduxModule> {
+  static forRoot(...module: StateModule<any>[]): ModuleWithProviders<NgxReduxModule> {
     if (!module || (module && !module.length)) {
       throw 'the parameter "module" must have a valid value!'
     }
     const initialRootState = mergeState(module);
     const actions = createActions(module, initialRootState);
     const reducer = createReducer(actions, initialRootState);
-    const effects = createEffects(...module);
+    const effects = createEffects(module);
     const composeEnhaners = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
 
     const middleware = createEffectMiddleware(actions, effects);
@@ -36,9 +36,9 @@ export class NgxReduxModule {
           provide: m,
           useFactory() {
             // console.log(arguments);
-            m.effectsDep = Array.from(arguments);
+            m.effectsDeps = Array.from(arguments);
             return new NgxReduxStore(store, m)
-          }, deps: m.effectsDep
+          }, deps: m.effectsDeps
         }
       )
     })

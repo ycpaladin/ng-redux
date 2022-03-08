@@ -1,14 +1,14 @@
 import { StateModule } from "./models";
-// import { NgxReduxStore } from "./store";
 import { getActionType } from "./utils";
-// import { Store } from 'redux';
 
-// , store: Store<S>
+/**
+ * 把 module 上的actions所有的方法挂到`NgxReduxStore`上
+ * @param this `NgxReduxStore`
+ * @param module
+ */
 export function mapActions<S>(this: { [key: string]: any }, module: StateModule<S>) {
-  // (this.actions as any) = {}
   Object.keys(module.actions).forEach((key) => {
     this[key] = (...rest: any[]) => {
-      // const state = store.getState();
       const actionType = getActionType(module.name, key);
       this.dispatch({
         type: actionType,

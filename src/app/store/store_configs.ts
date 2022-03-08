@@ -26,7 +26,7 @@ export interface UserActions {
   updateUser(username: string, age: number): void;
 }
 
-export const userModule: StateModule<IUserState, UserActions> = {
+export const userModule: StateModule<IUserState, UserActions, [typeof HttpClient]> = {
   name: 'user',
   state: {
     user: { username: 'kevin' },
@@ -82,7 +82,7 @@ export const userModule: StateModule<IUserState, UserActions> = {
     },
 
   },
-  effectsDep: [HttpClient]
+  effectsDeps: [HttpClient]
 }
 
 // userModule.actions

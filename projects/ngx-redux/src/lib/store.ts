@@ -10,14 +10,14 @@ import { select } from './select';
 export class NgxReduxStore<S, A> implements SelectContext<S>{
 
   select<S, R>(pathFunction: PathFunction<S, R>): Observable<R> {
-    return select.call(this as any, pathFunction as any) as any;
+    return select.call(this, pathFunction as any) as any;
   }
 
   constructor(
     @Inject(STORE_RPOVIDERS) public store: Store<S>,
     @Inject(MODULE_CONFIG) public module: StateModule<S, A>,
   ) {
-    mapActions.call(this as any, module as any); // TODO...
+    mapActions.call(this as any, module);
   }
 
   getState(): S {
