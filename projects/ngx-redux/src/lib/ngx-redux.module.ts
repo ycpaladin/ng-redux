@@ -14,44 +14,35 @@ import { createEffects } from './createEffects';
 export class NgxReduxModule {
 
   static forRoot(...module: StateModule<any, any>[]): ModuleWithProviders<NgxReduxModule> {
-
-    // TODO... 三种情况处理
+    if (!module || (module && !module.length)) {
+      throw 'the parameter "module" must have a valid value!'
+    }
     const initialRootState = mergeState(module);
-    const actions = createActions(module, initialRootState); // , () => store
+    const actions = createActions(module, initialRootState);
     const reducer = createReducer(actions, initialRootState);
     const effects = createEffects(...module);
     const composeEnhaners = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
 
     const middleware = createEffectMiddleware(actions, effects);
-    const enhancer = composeEnhaners(applyMiddleware(middleware)) // , plugin && plugin()
-    // const enhancer = applyMiddleware(middleware,  plugin && plugin())
-    const store = createStore(reducer as any, initialRootState, enhancer); // TODO
-    // // __REDUX_DEVTOOLS_EXTENSION__
-
+    const enhancer = composeEnhaners(applyMiddleware(middleware))
+    const store = createStore(reducer, initialRootState, enhancer); // TODO
 
     const providers: Provider[] = [
-
     ]
 
-    if (Array.isArray(module)) {
-      module.forEach(m => {
-        providers.push(
-          {
-            provide: m, useFactory() {
-              return new NgxReduxStore(store, m)
-            }, deps: m.effectsDep
-          }
-        )
-      })
-    } else {
+    module.forEach(m => {
       providers.push(
         {
-          provide: module, useFactory() {
-            return new NgxReduxStore(store, module as any)
-          }, deps: []
+          provide: m,
+          useFactory() {
+            // console.log(arguments);
+            m.effectsDep = Array.from(arguments);
+            return new NgxReduxStore(store, m)
+          }, deps: m.effectsDep
         }
       )
-    }
+    })
+
 
     return {
       ngModule: NgxReduxModule,

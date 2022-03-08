@@ -16,10 +16,10 @@ type Effects<S, A, D > = {
 } & ThisType<A & IStoreService<S, A> & { deps: D}>
 export interface StateModule<S, A = any, D = any[]> {
   name: string;
-  state: S,
-  actions: A & ThisType<S>,
-  effects: Effects<S, A, D>,
-  effectsDep?: D
+  state: S;
+  actions: A & ThisType<S>;
+  effects: Effects<S, A, D>;
+  effectsDep?: D;
 }
 
 export interface ActionModule<S> {

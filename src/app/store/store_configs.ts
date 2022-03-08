@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { StateModule } from "ngx-redux";
 import { of } from "rxjs";
 import { map } from "rxjs/operators";
@@ -55,6 +56,8 @@ export const userModule: StateModule<IUserState, UserActions> = {
   },
   effects: {
     login(username: string, password: string) { // ofType(login)
+      const [http] = this.deps;
+      console.log(http);
       // console.log(username, password);
       // setTimeout
       // setTimeout(() => {
@@ -79,7 +82,7 @@ export const userModule: StateModule<IUserState, UserActions> = {
     },
 
   },
-  effectsDep: []
+  effectsDep: [HttpClient]
 }
 
 // userModule.actions
