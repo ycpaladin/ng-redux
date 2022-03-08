@@ -15,12 +15,12 @@ export function createAction<S>(action: Function, name: string) {
     fn: action // .bind(state)
   }
 }
-export function createActions<S>(module: StateModule<S> | StateModule<S>[], initialRootState: { [key: string]: any }): ActionConfig<S> {
+export function createActions<S>(module: StateModule<any, any> | StateModule<any, any>[], initialRootState: { [key: string]: any }): ActionConfig<S> {
   if (Array.isArray(module)) {
     return module.reduce((prev, curr) => {
-      const actions = createActions(curr, initialRootState);
-      actions.forEach(({ fn, fnName, module }, key) => {
-        prev.set(key, { fn, module, fnName });
+      const actions = createActions<S>(curr, initialRootState);
+      actions.forEach((v, key) => {
+        prev.set(key, v);
       });
       return prev;
     }, new Map<string, ActionModule<S>>());
@@ -28,11 +28,11 @@ export function createActions<S>(module: StateModule<S> | StateModule<S>[], init
     const keys = Object.keys(module.actions);
     return keys.reduce((prev, key) => {
       const action = createAction(module.actions[key], module.name);
-      prev.set(action.type, {
+      prev.set(
+        action.type, {
         fn: action.fn.bind(initialRootState[module.name]),
-        fnName: key,
-        module
-      }); // action.fn
+        module,
+      });
       return prev;
     }, new Map<string, ActionModule<S>>())
   }

@@ -14,7 +14,7 @@ export type EffectsDep = any[];
 type Effects<S, A, D> = {
   [key in keyof A]?: A[key] // Effect<A & IStoreService<S, A>>
 } & ThisType<A & IStoreService<S, A> & { deps: D }>
-export interface StateModule<S, A = any, D = any[]> {
+export interface StateModule<S, A = any, D = object[]> {
   readonly name: string;
   state: S;
   actions: A & ThisType<S>;
@@ -24,8 +24,7 @@ export interface StateModule<S, A = any, D = any[]> {
 
 export interface ActionModule<S> {
   fn: Function;
-  fnName: string;
-  module: StateModule<S>;
+  module: StateModule<S, any>;
 }
 export type ActionConfig<S> = Map<string, ActionModule<S>>;
 
@@ -48,3 +47,34 @@ export interface SelectContext<S> {
 
 
 export type PathFunction<S, R> = (state: S) => R;
+
+// ---------------------- test---------
+
+class A {
+  a!: string;
+}
+
+class B {
+  b!: string;
+}
+
+class C {
+  c!: string;
+}
+
+type Flatten<T> = T extends Array<infer U> ? U : never
+
+//  = any[]
+export type Root<D = object[]> = {
+  deps: D;
+  depsInstance: () => void
+} & ThisType<{ depArray: Flatten<D>[] }>
+
+// <[typeof A, typeof B, typeof C]>
+const root: Root<[typeof A, typeof B, typeof C]> = {
+  deps: [A, B, C],
+  depsInstance: function () {
+    const [a, b, c] = this.depArray;
+
+  }
+}

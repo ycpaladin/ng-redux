@@ -13,7 +13,7 @@ import { createEffects } from './createEffects';
 @NgModule({})
 export class NgxReduxModule {
 
-  static forRoot(...module: StateModule<any>[]): ModuleWithProviders<NgxReduxModule> {
+  static forRoot(...module: StateModule<any, any>[]): ModuleWithProviders<NgxReduxModule> {
     if (!module || (module && !module.length)) {
       throw 'the parameter "module" must have a valid value!'
     }
